@@ -14,7 +14,7 @@ import {
 
 function header() {
 	return (
-		<div>
+		<div className="shadow-sm border-b bg-whote sticky top-0 z-50">
 			{/* Left side */}
 			<div className="flex justify-between max-w-6xl mx-5 lg:mx-auto">
 				<div className="relative hidden lg:inline-grid  w-24 cursor-pointer">
@@ -40,10 +40,20 @@ function header() {
 				<div className="flex items-center justify-end space-x-4">
 					<HomeIcon className="navBtn" />
 					<MenuIcon className="h-6 md:hidden cursor-pointer" />
-					<PaperAirplaneIcon className="navBtn" />
+					<div className="relative navBtn">
+						<PaperAirplaneIcon className="navBtn rotate-45" />
+						<div className="absolute -top-2 -right-2 text-xs w-5 h-5 bg-red-500 rounded-full flex items-center justify-center text-white animate-pulse">
+							3
+						</div>
+					</div>
 					<PlusCircleIcon className="navBtn" />
 					<UserGroupIcon className="navBtn" />
 					<HeartIcon className="navBtn" />
+					<img
+						className="h-10 rounded-full cursor-pointer"
+						src="https://images.generated.photos/4JcMx1jDIXuHbfBU8clV0RLOv_jT9f3ZAZCLrO7KvRs/rs:fit:512:512/wm:0.95:sowe:18:18:0.33/czM6Ly9pY29uczgu/Z3Bob3Rvcy1wcm9k/LnBob3Rvcy92M18w/NzQ0NDIxLmpwZw.jpg"
+						alt=""
+					/>
 				</div>
 			</div>
 		</div>
