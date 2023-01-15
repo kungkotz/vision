@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import {
+	BookmarkIcon,
 	ChatIcon,
 	DotsHorizontalIcon,
 	HeartIcon,
@@ -20,10 +21,13 @@ function Post({ id, username, userImg, img, text }) {
 				<DotsHorizontalIcon className="h-5" />
 			</div>
 			<img className="object-cover w-full" src={img} alt="" />
-			<div className="flex">
-				<HeartIcon className="postBtn" />
-				<ChatIcon className="postBtn" />
-				<PaperAirplaneIcon className="postBtn" />
+			<div className="flex justify-between ">
+				<div className=" flex space-x-2">
+					<HeartIcon className="postBtn" />
+					<ChatIcon className="postBtn" />
+					<PaperAirplaneIcon className="postBtn" />
+				</div>
+				<BookmarkIcon className="postBtn" />
 			</div>
 		</div>
 	);
