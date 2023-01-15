@@ -6,6 +6,7 @@ import {
 	HeartIcon,
 	PaperAirplaneIcon,
 } from "@heroicons/react/outline";
+// https://www.npmjs.com/package/heroicons
 
 function Post({ id, username, userImg, img, text }) {
 	return (
@@ -19,12 +20,10 @@ function Post({ id, username, userImg, img, text }) {
 				<DotsHorizontalIcon className="h-5" />
 			</div>
 			<img className="object-cover w-full" src={img} alt="" />
-			<div className="flex justify-between p-2">
-				<div className="flex space-x-2">
-					<HeartIcon className="postBtn" />
-					<ChatIcon className="postBtn" />
-					<PaperAirplaneIcon className="postBtn rotate-90" />
-				</div>
+			<div className="flex">
+				<HeartIcon className="postBtn" />
+				<ChatIcon className="postBtn" />
+				<PaperAirplaneIcon className="postBtn" />
 			</div>
 		</div>
 	);
