@@ -2,7 +2,7 @@ import React from "react";
 
 function SideProfile() {
 	return (
-		<div className="flex items-center justify-between mt-14 ml-10">
+		<div className="flex items-center justify-between mt-14 ml-10 ">
 			<img
 				className="rounded-full border p-[2px] w-16 h-16"
 				src="https://images.generated.photos/4JcMx1jDIXuHbfBU8clV0RLOv_jT9f3ZAZCLrO7KvRs/rs:fit:512:512/wm:0.95:sowe:18:18:0.33/czM6Ly9pY29uczgu/Z3Bob3Rvcy1wcm9k/LnBob3Rvcy92M18w/NzQ0NDIxLmpwZw.jpg"

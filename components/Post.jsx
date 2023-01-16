@@ -42,7 +42,7 @@ function Post({ id, username, userImg, img, text }) {
 				/>
 				<div className="flex ">
 					<EmojiHappyIcon className="postBtn mx-1" />
-					<button className="font-semibold text-red-600">Publish</button>
+					<button className="font-semibold ">Publish</button>
 				</div>
 			</form>
 		</div>
