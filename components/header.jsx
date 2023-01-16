@@ -11,8 +11,12 @@ import {
 	MenuIcon,
 	HomeIcon,
 } from "@heroicons/react/outline";
+import { useSession } from "next-auth/react";
 
 function header() {
+	const { data: session } = useSession();
+
+	console.log(session);
 	return (
 		<div className="shadow-sm border-b bg-neutral-800 sticky top-0 z-50">
 			<div className="flex justify-between max-w-6xl mx-5 lg:mx-auto">
@@ -20,8 +24,8 @@ function header() {
 					<MenuIcon className="h-6 md:hidden cursor-pointer text-white " />
 					<img
 						className="h-10 rounded-full cursor-pointer"
-						src="https://images.generated.photos/4JcMx1jDIXuHbfBU8clV0RLOv_jT9f3ZAZCLrO7KvRs/rs:fit:512:512/wm:0.95:sowe:18:18:0.33/czM6Ly9pY29uczgu/Z3Bob3Rvcy1wcm9k/LnBob3Rvcy92M18w/NzQ0NDIxLmpwZw.jpg"
-						alt=""
+						src={session?.user?.image}
+						alt="imaaage"
 					/>
 
 					<HomeIcon className="navBtn " />
