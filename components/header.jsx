@@ -30,8 +30,8 @@ function header() {
 								src={session.user.image}
 								alt="Img not loaded properly"
 							/>
-
 							<HomeIcon className="navBtn " />
+
 							<div className="relative navBtn">
 								<PaperAirplaneIcon className="navBtn rotate-45" />
 								<div className="absolute -top-2 -right-2 text-xs w-5 h-5 bg-red-500 rounded-full flex items-center justify-center text-white">
@@ -43,9 +43,12 @@ function header() {
 							<HeartIcon className="navBtn" />
 						</>
 					) : (
-						<button className="text-white" onClick={signIn}>
-							Sign In
-						</button>
+						<>
+							<button className="text-white" onClick={signIn}>
+								Sign In
+							</button>
+							<HomeIcon className="navBtn " />
+						</>
 					)}
 				</div>
 
