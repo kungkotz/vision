@@ -12,6 +12,7 @@ import {
 	HomeIcon,
 } from "@heroicons/react/outline";
 import { signIn, signOut, useSession } from "next-auth/react";
+import Router from "next/router";
 
 function header() {
 	const { data: session } = useSession();
@@ -30,7 +31,7 @@ function header() {
 								src={session.user.image}
 								alt="Img not loaded properly"
 							/>
-							<HomeIcon className="navBtn " />
+							<HomeIcon onClick={() => Router.push("/")} className="navBtn " />
 
 							<div className="relative navBtn">
 								<PaperAirplaneIcon className="navBtn rotate-45" />
@@ -47,7 +48,7 @@ function header() {
 							<button className="text-white" onClick={signIn}>
 								Sign In
 							</button>
-							<HomeIcon className="navBtn " />
+							<HomeIcon onClick={() => Router.push("/")} className="navBtn " />
 						</>
 					)}
 				</div>
@@ -66,10 +67,20 @@ function header() {
 				</div>
 				{}
 				<div className="relative hidden lg:inline-grid  w-24 cursor-pointer">
-					<Image src={LogoText} fill className="object-contain" />
+					<Image
+						onClick={() => Router.push("/")}
+						src={LogoText}
+						fill
+						className="object-contain"
+					/>
 				</div>
 				<div className="relative lg:hidden flex-shrink-0  w-10 cursor-pointer">
-					<Image src={LogoEye} fill className="object-contain" />
+					<Image
+						onClick={() => Router.push("/")}
+						src={LogoEye}
+						fill
+						className="object-contain"
+					/>
 				</div>
 			</div>
 		</div>
