@@ -11,33 +11,42 @@ import {
 	MenuIcon,
 	HomeIcon,
 } from "@heroicons/react/outline";
-import { useSession } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 
 function header() {
 	const { data: session } = useSession();
 
-	console.log(session);
 	return (
 		<div className="shadow-sm border-b bg-neutral-800 sticky top-0 z-50">
 			<div className="flex justify-between max-w-6xl mx-5 lg:mx-auto">
 				<div className="flex items-center justify-end space-x-4">
 					<MenuIcon className="h-6 md:hidden cursor-pointer text-white " />
-					<img
-						className="h-10 rounded-full cursor-pointer"
-						src={session?.user?.image}
-						alt="imaaage"
-					/>
 
-					<HomeIcon className="navBtn " />
-					<div className="relative navBtn">
-						<PaperAirplaneIcon className="navBtn rotate-45" />
-						<div className="absolute -top-2 -right-2 text-xs w-5 h-5 bg-red-500 rounded-full flex items-center justify-center text-white">
-							3
-						</div>
-					</div>
-					<PlusCircleIcon className="navBtn" />
-					<UserGroupIcon className="navBtn" />
-					<HeartIcon className="navBtn" />
+					{session ? (
+						<>
+							<img
+								onClick={signOut}
+								className="h-10 rounded-full cursor-pointer"
+								src={session.user.image}
+								alt="Img not loaded properly"
+							/>
+
+							<HomeIcon className="navBtn " />
+							<div className="relative navBtn">
+								<PaperAirplaneIcon className="navBtn rotate-45" />
+								<div className="absolute -top-2 -right-2 text-xs w-5 h-5 bg-red-500 rounded-full flex items-center justify-center text-white">
+									3
+								</div>
+							</div>
+							<PlusCircleIcon className="navBtn" />
+							<UserGroupIcon className="navBtn" />
+							<HeartIcon className="navBtn" />
+						</>
+					) : (
+						<button className="text-white" onClick={signIn}>
+							Sign In
+						</button>
+					)}
 				</div>
 
 				<div className="max-w-xs">
@@ -52,6 +61,7 @@ function header() {
 						/>
 					</div>
 				</div>
+				{}
 				<div className="relative hidden lg:inline-grid  w-24 cursor-pointer">
 					<Image src={LogoText} fill className="object-contain" />
 				</div>

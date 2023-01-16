@@ -1,5 +1,5 @@
 // Import the functions you need from the SDKs you need
-import { getApp, getApps, initializeApp } from "firebase/app";
+import { initializeApp, getApps, getApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 // TODO: Add SDKs for Firebase products that you want to use
@@ -7,12 +7,12 @@ import { getStorage } from "firebase/storage";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-	apiKey: "AIzaSyBU9yQLsyPCPGolI64Ge5tfLfY6DA48ffU",
-	authDomain: "vision-kotz.firebaseapp.com",
-	projectId: "vision-kotz",
-	storageBucket: "vision-kotz.appspot.com",
-	messagingSenderId: "301080240403",
-	appId: "1:301080240403:web:8a5d9e43de36770fdf7ae6",
+	apiKey: "AIzaSyArB9tHEq6FpIBOV9TBRsiX4Dc_rEiZfYo",
+	authDomain: "kotz-vision-project.firebaseapp.com",
+	projectId: "kotz-vision-project",
+	storageBucket: "kotz-vision-project.appspot.com",
+	messagingSenderId: "545756176214",
+	appId: "1:545756176214:web:84598e78027823498480f7",
 };
 
 // Initialize Firebase
