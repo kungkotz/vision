@@ -1,14 +1,21 @@
+/* This example requires Tailwind CSS v2.0+ */
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 import { modalState } from "../atoms/modalAtom";
 import { CameraIcon } from "@heroicons/react/outline";
 
-function Modal() {
+export default function Example() {
 	const [open, setOpen] = useRecoilState(modalState);
 	const filePickerRef = useRef(null);
 	const [selectedFile, setSelectedFile] = useState(null);
 	const captionRef = useRef(null);
+	const cancelButtonRef = useRef(null);
+
+	const cancel = () => {
+		setSelectedFile(null);
+		setOpen(false);
+	};
 
 	const addImageToPost = (e) => {
 		const reader = new FileReader();
@@ -19,14 +26,19 @@ function Modal() {
 			setSelectedFile(e.target.result);
 		};
 	};
+
 	return (
 		<Transition.Root show={open} as={Fragment}>
 			<Dialog
 				as="div"
 				className="fixed z-10 inset-0 overflow-y-auto"
-				onClose={setOpen}
+				initialFocus={cancelButtonRef}
+				onClose={() => cancel()}
 			>
-				<div className="flex items-end justify-center min-h-[800px] sm:min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+				<div
+					className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block
+					sm:p-0"
+				>
 					<Transition.Child
 						as={Fragment}
 						enter="ease-out duration-300"
@@ -38,71 +50,106 @@ function Modal() {
 					>
 						<Dialog.Overlay className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
 					</Transition.Child>
-					{/* This element is to trick the browser into centering the modal content */}
+
+					{/* This element is to trick the browser into centering the modal contents. */}
 					<span
 						className="hidden sm:inline-block sm:align-middle sm:h-screen"
 						aria-hidden="true"
 					>
 						&#8203;
 					</span>
-
 					<Transition.Child
 						as={Fragment}
 						enter="ease-out duration-300"
 						enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-						enterTo="opcity-100 trnslat-y-0 sm:scale-100"
+						enterTo="opacity-100 translate-y-0 sm:scale-100"
+						leave="ease-in duration-200"
+						leaveFrom="opacity-100 translate-y-0 sm:scale-100"
 						leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
 					>
-						<div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-sm sm:w-full sm:p-6">
+						<div
+							className="inline-block align-bottom bg-white rounded-lg
+							 text-left 
+							 overflow-hidden shadow-xl 
+							 transform transition-all 
+							 sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
+						>
 							<div>
 								{selectedFile ? (
-									<>
+									<div>
 										<div>
 											<img src={selectedFile} alt="HERE BE FILE" />
 										</div>
-										<div className="mt-5 sm:mt-6">
-											<button
-												className="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:text-sm disabled:bg-gray-300 disabled:cursor-not-allowed hover:disabled:bg-gray-300"
-												on
-												onClick={() => setSelectedFile(null)}
-											>
-												Reset picture
-											</button>
-										</div>
-									</>
+									</div>
 								) : (
-									<div>
+									<div
+										className="flex justify-center cursor-pointer"
+										onClick={() => filePickerRef.current.click()}
+									>
+										<CameraIcon
+											className="h-24 w-24 text-red-600"
+											aria-hidden="true"
+										/>
 										<input
 											ref={filePickerRef}
 											type="file"
+											hidden
 											onChange={addImageToPost}
 										/>
 									</div>
 								)}
 
 								<div>
-									<div>
-										<div className="mt-3 text-center sm:mt-5">
-											<div className="mt-2">
-												<input
-													className="border-none focus-ring-0 w-full text-center"
-													type="text"
-													ref={captionRef}
-													placeholder="Write a caption..."
-												/>
-											</div>
+									<div className="mt-3 text-center sm:mt-5">
+										<div className="mt-2 ">
+											<input
+												className=" border-none focus-ring-0 w-full text-center "
+												type="text"
+												ref={captionRef}
+												placeholder="Write a caption..."
+											/>
 										</div>
 									</div>
 								</div>
-
-								<div className="mt-5 sm:mt-6">
-									<button
-										className="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:text-sm disabled:bg-gray-300 disabled:cursor-not-allowed hover:disabled:bg-gray-300"
-										type="button"
-									>
-										Upload
-									</button>
-								</div>
+							</div>
+							<div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+								<button
+									type="button"
+									className="w-full inline-flex justify-center rounded-md
+									border border-transparent shadow-sm px-4 py-2 bg-red-600
+									text-base font-medium text-white hover:bg-red-700 
+									focus:outline-none focus:ring-2 focus:ring-offset-2
+									focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
+									onClick={() => setOpen(false)}
+								>
+									Publish
+								</button>
+								<button
+									type="button"
+									className="mt-3 w-full inline-flex justify-center
+									rounded-md border border-gray-300 shadow-sm px-4 py-2
+									bg-white text-base font-medium text-gray-700
+									hover:bg-gray-50 focus:outline-none focus:ring-2
+									focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0
+									sm:ml-3 sm:w-auto sm:text-sm"
+									onClick={() => setSelectedFile(null)}
+									ref={cancelButtonRef}
+								>
+									Reset
+								</button>
+								<button
+									type="button"
+									className="mt-3 w-full inline-flex justify-center
+									rounded-md border border-gray-300 shadow-sm px-4 py-2
+									bg-white text-base font-medium text-gray-700
+									hover:bg-gray-50 focus:outline-none focus:ring-2
+									focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0
+									sm:ml-3 sm:w-auto sm:text-sm"
+									onClick={() => cancel()}
+									ref={cancelButtonRef}
+								>
+									Cancel
+								</button>
 							</div>
 						</div>
 					</Transition.Child>
@@ -111,5 +158,3 @@ function Modal() {
 		</Transition.Root>
 	);
 }
-
-export default Modal;
