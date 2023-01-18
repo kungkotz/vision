@@ -1,6 +1,6 @@
 /* This example requires Tailwind CSS v2.0+ */
 import { Dialog, Transition } from "@headlessui/react";
-import { Fragment, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 import { modalState } from "../atoms/modalAtom";
 import { CameraIcon } from "@heroicons/react/outline";
@@ -15,11 +15,12 @@ import {
 import { useSession } from "next-auth/react";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 
-export default function Example() {
+export default function postModal() {
 	const { data: session } = useSession();
 	const [open, setOpen] = useRecoilState(modalState);
 	const [selectedFile, setSelectedFile] = useState(null);
 	const [loading, setLoading] = useState(false);
+	const [buttonStatus, setButtonStatus] = useState(false);
 	const captionRef = useRef(null);
 	const filePickerRef = useRef(null);
 	const cancelButtonRef = useRef(null);
@@ -27,7 +28,6 @@ export default function Example() {
 	const uploadPost = async () => {
 		if (loading) return;
 		setLoading(true);
-
 		const docRef = await addDoc(collection(db, "posts"), {
 			username: session.user.username,
 			caption: captionRef.current.value,
@@ -120,13 +120,11 @@ export default function Example() {
 										</div>
 									</div>
 								) : (
-									<div
-										className="flex justify-center cursor-pointer"
-										onClick={() => filePickerRef.current.click()}
-									>
+									<div className="flex justify-center cursor-pointer">
 										<CameraIcon
-											className="h-24 w-24 text-red-600"
+											className="h-24 w-24 text-red-600 "
 											aria-hidden="true"
+											onClick={() => filePickerRef.current.click()}
 										/>
 										<input
 											ref={filePickerRef}
@@ -161,8 +159,9 @@ export default function Example() {
 									focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
 									onClick={uploadPost}
 								>
-									{loading ? "Publishing..." : "Publish"}
+									{loading ? "Publishing..." : "Publish Post"}
 								</button>
+
 								<button
 									type="button"
 									className="mt-3 w-full inline-flex justify-center
@@ -172,7 +171,6 @@ export default function Example() {
 									focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0
 									sm:ml-3 sm:w-auto sm:text-sm"
 									onClick={() => setSelectedFile(null)}
-									ref={cancelButtonRef}
 								>
 									Reset
 								</button>

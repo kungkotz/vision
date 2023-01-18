@@ -18,7 +18,7 @@ import Router from "next/router";
 import { useRecoilState } from "recoil";
 import { modalState } from "../atoms/modalAtom";
 
-function header() {
+function Header() {
 	const { data: session } = useSession();
 	const [open, setOpen] = useRecoilState(modalState);
 
@@ -50,7 +50,7 @@ function header() {
 								onClick={() => setOpen(true)}
 								className="navBtn"
 							/>
-							<UserGroupIcon className="navBtn" />
+							<UserGroupIcon className="navBtn" onClick={() => setOpen(true)} />
 							<HeartIcon className="navBtn" />
 						</>
 					) : (
@@ -85,4 +85,4 @@ function header() {
 	);
 }
 
-export default header;
+export default Header;

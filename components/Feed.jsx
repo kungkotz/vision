@@ -21,19 +21,22 @@ function Feed() {
 					</div>
 				</section>
 			)}
-
-			<section className="col-span-2 md:hidden">
-				<Stories />
-				<Posts />
-			</section>
-			<section className="col-span-2  ">
-				<div className="hidden md:flex ">
-					<div>
-						<Posts />
-					</div>
+			{session && (
+				<section className="col-span-2 md:hidden">
 					<Stories />
-				</div>
-			</section>
+					<Posts />
+				</section>
+			)}
+			{session && (
+				<section className="col-span-2  ">
+					<div className="hidden md:flex ">
+						<div>
+							<Posts />
+						</div>
+						<Stories />
+					</div>
+				</section>
+			)}
 		</main>
 	);
 }
