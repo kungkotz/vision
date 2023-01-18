@@ -4,14 +4,52 @@ import { Fragment, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 import { modalState } from "../atoms/modalAtom";
 import { CameraIcon } from "@heroicons/react/outline";
+import { db, storage } from "../firebase";
+import {
+	addDoc,
+	collection,
+	doc,
+	serverTimestamp,
+	updateDoc,
+} from "@firebase/firestore";
+import { useSession } from "next-auth/react";
+import { getDownloadURL, ref, uploadString } from "firebase/storage";
 
 export default function Example() {
+	const { data: session } = useSession();
 	const [open, setOpen] = useRecoilState(modalState);
-	const filePickerRef = useRef(null);
 	const [selectedFile, setSelectedFile] = useState(null);
+	const [loading, setLoading] = useState(false);
 	const captionRef = useRef(null);
+	const filePickerRef = useRef(null);
 	const cancelButtonRef = useRef(null);
 
+	const uploadPost = async () => {
+		if (loading) return;
+		setLoading(true);
+
+		const docRef = await addDoc(collection(db, "post"), {
+			username: session.user.username,
+			caption: captionRef.current.value,
+			profileImg: session.user.image,
+			timestamp: serverTimestamp(),
+		});
+
+		console.log("New doc added with ID", docRef.id);
+		const imageRef = ref(storage, `posts/${docRef.id}/image`);
+
+		await uploadString(imageRef, selectedFile, "data_url").then(
+			async (snapshot) => {
+				const downloadURL = await getDownloadURL(imageRef);
+				await updateDoc(doc(db, "post", docRef.id), {
+					image: downloadURL,
+				});
+			}
+		);
+		setOpen(false);
+		setLoading(false);
+		setSelectedFile(null);
+	};
 	const cancel = () => {
 		setSelectedFile(null);
 		setOpen(false);
@@ -115,14 +153,15 @@ export default function Example() {
 							<div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
 								<button
 									type="button"
+									disabled={!selectedFile}
 									className="w-full inline-flex justify-center rounded-md
 									border border-transparent shadow-sm px-4 py-2 bg-red-600
 									text-base font-medium text-white hover:bg-red-700 
 									focus:outline-none focus:ring-2 focus:ring-offset-2
 									focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
-									onClick={() => setOpen(false)}
+									onClick={uploadPost}
 								>
-									Publish
+									{loading ? "Publishing..." : "Publish"}
 								</button>
 								<button
 									type="button"
