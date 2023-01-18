@@ -6,24 +6,29 @@ import { db } from "../firebase";
 function Posts() {
 	const [posts, setPosts] = useState([]);
 	useEffect(() => {
-		const unsubscribe = onSnapshot(
-			query(collection(db, "posts"), orderBy("timestamp", "desc")),
-			(snapshot) => {
-				setPosts(snapshot.docs);
-			}
-		);
-		return unsubscribe();
-	}, [db]);
-	console.log(posts);
+		const ref = query(collection(db, "posts"), orderBy("timestamp", "desc"));
+		const unsubscribe = onSnapshot(ref, (snapshot) => {
+			const docs = snapshot.docs.map((doc) => {
+				return {
+					id: doc.id,
+					...doc.data(),
+				};
+			});
+
+			setPosts(docs);
+		});
+
+		return unsubscribe;
+	}, []);
 	return (
 		<div>
 			{posts.map((post) => (
 				<Post
 					key={post.id}
-					username={post.data().username}
-					userImg={post.data().profileImg}
-					img={post.data().image}
-					text={post.data().caption}
+					username={post.username}
+					userImg={post.profileImg}
+					img={post.image}
+					text={post.caption}
 				/>
 			))}
 		</div>
