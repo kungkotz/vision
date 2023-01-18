@@ -28,7 +28,7 @@ export default function Example() {
 		if (loading) return;
 		setLoading(true);
 
-		const docRef = await addDoc(collection(db, "post"), {
+		const docRef = await addDoc(collection(db, "posts"), {
 			username: session.user.username,
 			caption: captionRef.current.value,
 			profileImg: session.user.image,
@@ -41,7 +41,7 @@ export default function Example() {
 		await uploadString(imageRef, selectedFile, "data_url").then(
 			async (snapshot) => {
 				const downloadURL = await getDownloadURL(imageRef);
-				await updateDoc(doc(db, "post", docRef.id), {
+				await updateDoc(doc(db, "posts", docRef.id), {
 					image: downloadURL,
 				});
 			}
