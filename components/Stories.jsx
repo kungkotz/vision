@@ -40,7 +40,7 @@ function Stories() {
 				<Story
 					key={post.id}
 					username={post.username}
-					userImg={post.profileImg}
+					userImg={post.profileImage}
 					img={post.image}
 					text={post.caption}
 				/>

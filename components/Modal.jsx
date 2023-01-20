@@ -21,6 +21,7 @@ export default function postModal() {
 	const [selectedFile, setSelectedFile] = useState(null);
 	const [loading, setLoading] = useState(false);
 	const [buttonStatus, setButtonStatus] = useState(false);
+	const [isStory, setIsStory] = useState(false);
 	const captionRef = useRef(null);
 	const filePickerRef = useRef(null);
 	const cancelButtonRef = useRef(null);
@@ -28,28 +29,50 @@ export default function postModal() {
 	const uploadPost = async () => {
 		if (loading) return;
 		setLoading(true);
-		const docRef = await addDoc(collection(db, "posts"), {
-			username: session.user.username,
-			caption: captionRef.current.value,
-			profileImg: session.user.image,
-			timestamp: serverTimestamp(),
-		});
+		if (!isStory) {
+			const docRef = await addDoc(collection(db, "posts"), {
+				username: session.user.username,
+				caption: captionRef.current.value,
+				profilePhoto: session.user.image,
+				timestamp: serverTimestamp(),
+			});
+			console.log("New doc added with ID", docRef.id);
+			const imageRef = ref(storage, `posts/${docRef.id}/image`);
 
-		console.log("New doc added with ID", docRef.id);
-		const imageRef = ref(storage, `posts/${docRef.id}/image`);
+			await uploadString(imageRef, selectedFile, "data_url").then(
+				async (snapshot) => {
+					const downloadURL = await getDownloadURL(imageRef);
+					await updateDoc(doc(db, "posts", docRef.id), {
+						image: downloadURL,
+					});
+				}
+			);
+			setOpen(false);
+			setLoading(false);
+			setSelectedFile(null);
+		} else if (isStory) {
+			const docRef = await addDoc(collection(db, "stories"), {
+				username: session.user.username,
+				profilePhoto: session.user.image,
+				timestamp: serverTimestamp(),
+			});
+			console.log("New doc added with ID", docRef.id);
+			const imageRef = ref(storage, `stories/${docRef.id}/image`);
 
-		await uploadString(imageRef, selectedFile, "data_url").then(
-			async (snapshot) => {
-				const downloadURL = await getDownloadURL(imageRef);
-				await updateDoc(doc(db, "posts", docRef.id), {
-					image: downloadURL,
-				});
-			}
-		);
-		setOpen(false);
-		setLoading(false);
-		setSelectedFile(null);
+			await uploadString(imageRef, selectedFile, "data_url").then(
+				async (snapshot) => {
+					const downloadURL = await getDownloadURL(imageRef);
+					await updateDoc(doc(db, "stories", docRef.id), {
+						image: downloadURL,
+					});
+				}
+			);
+			setOpen(false);
+			setLoading(false);
+			setSelectedFile(null);
+		}
 	};
+
 	const cancel = () => {
 		setSelectedFile(null);
 		setOpen(false);
@@ -135,18 +158,21 @@ export default function postModal() {
 									</div>
 								)}
 
-								<div>
-									<div className="mt-3 text-center sm:mt-5">
-										<div className="mt-2 ">
-											<input
-												className=" border-none focus-ring-0 w-full text-center "
-												type="text"
-												ref={captionRef}
-												placeholder="Write a caption..."
-											/>
+								{!isStory && (
+									<div>
+										<div className="mt-3 text-center sm:mt-5">
+											<div className="mt-2 ">
+												<input
+													className=" border-none focus-ring-0 w-full text-center "
+													type="text"
+													ref={captionRef}
+													placeholder="Write a caption..."
+													accept=".png, .jpg, .jpeg"
+												/>
+											</div>
 										</div>
 									</div>
-								</div>
+								)}
 							</div>
 							<div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
 								<button
@@ -156,10 +182,13 @@ export default function postModal() {
 									border border-transparent shadow-sm px-4 py-2 bg-red-600
 									text-base font-medium text-white hover:bg-red-700 
 									focus:outline-none focus:ring-2 focus:ring-offset-2
-									focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
+									focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm disabled:bg-gray-600"
 									onClick={uploadPost}
+									title={
+										!selectedFile ? "Please select a file to upload" : "Publish"
+									}
 								>
-									{loading ? "Publishing..." : "Publish Post"}
+									{loading ? "Publishing..." : "Publish"}
 								</button>
 
 								<button
@@ -187,6 +216,23 @@ export default function postModal() {
 								>
 									Cancel
 								</button>
+								<label class="inline-flex relative items-center mr-5 cursor-pointer">
+									<input
+										type="checkbox"
+										className="sr-only peer"
+										checked={isStory}
+										readOnly
+									/>
+									<div
+										onClick={() => {
+											setIsStory(!isStory);
+										}}
+										className="w-11 h-6 bg-gray-200 rounded-full peer  peer-focus:ring-green-300  mt-5 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"
+									></div>
+									<span className="ml-2 text-sm font-medium mt-5 text-gray-900">
+										Post a Story?
+									</span>
+								</label>
 							</div>
 						</div>
 					</Transition.Child>

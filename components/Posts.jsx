@@ -5,6 +5,7 @@ import { db } from "../firebase";
 
 function Posts() {
 	const [posts, setPosts] = useState([]);
+
 	useEffect(() => {
 		const ref = query(collection(db, "posts"), orderBy("timestamp", "desc"));
 		const unsubscribe = onSnapshot(ref, (snapshot) => {
@@ -20,13 +21,15 @@ function Posts() {
 
 		return unsubscribe;
 	}, []);
+
 	return (
 		<div>
 			{posts.map((post) => (
 				<Post
 					key={post.id}
+					postId={post.id}
 					username={post.username}
-					userImg={post.profileImg}
+					userImage={post.profileImage}
 					img={post.image}
 					text={post.caption}
 				/>
