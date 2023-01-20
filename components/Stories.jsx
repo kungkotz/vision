@@ -12,7 +12,7 @@ function Stories() {
 	const [posts, setPosts] = useState([]);
 	useEffect(() => {
 		// get reference to collection
-		const ref = query(collection(db, "posts"), orderBy("timestamp", "desc"));
+		const ref = query(collection(db, "stories"), orderBy("timestamp", "desc"));
 
 		// subscribe to changes in collection
 		const unsubscribe = onSnapshot(ref, (snapshot) => {
@@ -34,17 +34,18 @@ function Stories() {
 	return (
 		<div className="overflow-x-scroll flex md:block space-x-2 md:space-x-0 p-6 mt-8 border md:border-hidden rounded-sm md:overflow-visible  ">
 			{session && (
-				<Story img={session.user.image} username={session.user.username} />
+				<>
+					{posts.map((post) => (
+						<Story
+							key={post.id}
+							username={post.username}
+							userImg={post.profileImage}
+							img={post.image}
+							text={post.caption}
+						/>
+					))}
+				</>
 			)}
-			{posts.map((post) => (
-				<Story
-					key={post.id}
-					username={post.username}
-					userImg={post.profileImage}
-					img={post.image}
-					text={post.caption}
-				/>
-			))}
 		</div>
 	);
 }

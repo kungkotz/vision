@@ -102,12 +102,15 @@ function Post({ postId, username, userImage, img, text }) {
 				<img
 					className="h-12 w-12 rounded-full object-contain border p-1 mr-3"
 					src={userImage}
-					alt="TRYHARD"
+					alt="userImage"
 				/>
 				<p className="font-bold flex-1">{username}</p>
 				<DotsHorizontalIcon className="h-5" />
 			</div>
-			<img className="object-cover w-full" src={img} alt="" />
+			<a href={img} target="_blank">
+				<img className="object-cover w-full" src={img} alt="" />
+			</a>
+
 			<div className="flex justify-between pt-4 px-4 ">
 				<div className=" flex space-x-4">
 					{hasLiked ? (
