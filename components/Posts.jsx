@@ -29,7 +29,7 @@ function Posts() {
 					key={post.id}
 					postId={post.id}
 					username={post.username}
-					userImage={post.profileImage}
+					userImage={post.userImage}
 					img={post.image}
 					text={post.caption}
 				/>

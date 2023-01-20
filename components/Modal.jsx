@@ -33,7 +33,7 @@ export default function postModal() {
 			const docRef = await addDoc(collection(db, "posts"), {
 				username: session.user.username,
 				caption: captionRef.current.value,
-				profilePhoto: session.user.image,
+				userImage: session.user.image,
 				timestamp: serverTimestamp(),
 			});
 			console.log("New doc added with ID", docRef.id);
@@ -53,7 +53,7 @@ export default function postModal() {
 		} else if (isStory) {
 			const docRef = await addDoc(collection(db, "stories"), {
 				username: session.user.username,
-				profilePhoto: session.user.image,
+				userImage: session.user.image,
 				timestamp: serverTimestamp(),
 			});
 			console.log("New doc added with ID", docRef.id);
