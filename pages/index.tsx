@@ -14,7 +14,6 @@ const Home: NextPage = () => {
 			<Modal />
 			<Header />
 			<Feed />
-			<h1>component name missmatch</h1>
 		</div>
 	);
 };
