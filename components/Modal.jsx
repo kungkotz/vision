@@ -4,16 +4,6 @@ import { Fragment, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 import { modalState } from "../atoms/modalAtom";
 import { CameraIcon } from "@heroicons/react/outline";
-<<<<<<< HEAD
-
-export default function Example() {
-	const [open, setOpen] = useRecoilState(modalState);
-	const filePickerRef = useRef(null);
-	const [selectedFile, setSelectedFile] = useState(null);
-	const captionRef = useRef(null);
-	const cancelButtonRef = useRef(null);
-
-=======
 import { db, storage } from "../firebase";
 import {
 	addDoc,
@@ -30,7 +20,6 @@ export default function postModal() {
 	const [open, setOpen] = useRecoilState(modalState);
 	const [selectedFile, setSelectedFile] = useState(null);
 	const [loading, setLoading] = useState(false);
-	const [buttonStatus, setButtonStatus] = useState(false);
 	const [isStory, setIsStory] = useState(false);
 	const captionRef = useRef(null);
 	const filePickerRef = useRef(null);
@@ -83,7 +72,6 @@ export default function postModal() {
 		}
 	};
 
->>>>>>> feat/uploadStory
 	const cancel = () => {
 		setSelectedFile(null);
 		setOpen(false);
@@ -154,21 +142,11 @@ export default function postModal() {
 										</div>
 									</div>
 								) : (
-<<<<<<< HEAD
-									<div
-										className="flex justify-center cursor-pointer"
-										onClick={() => filePickerRef.current.click()}
-									>
-										<CameraIcon
-											className="h-24 w-24 text-red-600"
-											aria-hidden="true"
-=======
 									<div className="flex justify-center cursor-pointer">
 										<CameraIcon
 											className="h-24 w-24 text-red-600 "
 											aria-hidden="true"
 											onClick={() => filePickerRef.current.click()}
->>>>>>> feat/uploadStory
 										/>
 										<input
 											ref={filePickerRef}
@@ -179,20 +157,6 @@ export default function postModal() {
 									</div>
 								)}
 
-<<<<<<< HEAD
-								<div>
-									<div className="mt-3 text-center sm:mt-5">
-										<div className="mt-2 ">
-											<input
-												className=" border-none focus-ring-0 w-full text-center "
-												type="text"
-												ref={captionRef}
-												placeholder="Write a caption..."
-											/>
-										</div>
-									</div>
-								</div>
-=======
 								{!isStory && (
 									<div>
 										<div className="mt-3 text-center sm:mt-5">
@@ -208,26 +172,15 @@ export default function postModal() {
 										</div>
 									</div>
 								)}
->>>>>>> feat/uploadStory
 							</div>
 							<div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
 								<button
 									type="button"
-<<<<<<< HEAD
-=======
 									disabled={!selectedFile}
->>>>>>> feat/uploadStory
 									className="w-full inline-flex justify-center rounded-md
 									border border-transparent shadow-sm px-4 py-2 bg-red-600
 									text-base font-medium text-white hover:bg-red-700 
 									focus:outline-none focus:ring-2 focus:ring-offset-2
-<<<<<<< HEAD
-									focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
-									onClick={() => setOpen(false)}
-								>
-									Publish
-								</button>
-=======
 									focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm disabled:bg-gray-600"
 									onClick={uploadPost}
 									title={
@@ -237,7 +190,6 @@ export default function postModal() {
 									{loading ? "Publishing..." : "Publish"}
 								</button>
 
->>>>>>> feat/uploadStory
 								<button
 									type="button"
 									className="mt-3 w-full inline-flex justify-center
@@ -247,10 +199,6 @@ export default function postModal() {
 									focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0
 									sm:ml-3 sm:w-auto sm:text-sm"
 									onClick={() => setSelectedFile(null)}
-<<<<<<< HEAD
-									ref={cancelButtonRef}
-=======
->>>>>>> feat/uploadStory
 								>
 									Reset
 								</button>
@@ -267,8 +215,6 @@ export default function postModal() {
 								>
 									Cancel
 								</button>
-<<<<<<< HEAD
-=======
 								<label class="inline-flex relative items-center mr-5 cursor-pointer">
 									<input
 										type="checkbox"
@@ -286,7 +232,6 @@ export default function postModal() {
 										Post a Story?
 									</span>
 								</label>
->>>>>>> feat/uploadStory
 							</div>
 						</div>
 					</Transition.Child>
