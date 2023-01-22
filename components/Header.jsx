@@ -37,12 +37,7 @@ function Header() {
 						</>
 					) : (
 						<>
-							<button
-								className="text-white"
-								onClick={() => {
-									e.preventDefault(), signIn;
-								}}
-							>
+							<button className="text-white" onClick={signIn}>
 								Sign In
 							</button>
 						</>
