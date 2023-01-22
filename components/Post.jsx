@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
 import {
-	BookmarkIcon,
 	ChatIcon,
 	DotsHorizontalIcon,
 	EmojiHappyIcon,
 	HeartIcon,
-	PaperAirplaneIcon,
 } from "@heroicons/react/outline";
 
 import {
@@ -32,7 +30,7 @@ function Post({ postId, username, userImage, img, text }) {
 	const { data: session } = useSession();
 	const [comment, setComment] = useState("");
 	const [commentsArray, setCommentsArray] = useState([]);
-	const [isInputFieldOpen, setIsInputFieldOpen] = useState(false);
+	const [isInputFieldOpen, setIsInputFieldOpen] = useState(true);
 	const [likes, setLikes] = useState([]);
 	const [hasLiked, setHasLiked] = useState(false);
 
@@ -129,9 +127,7 @@ function Post({ postId, username, userImage, img, text }) {
 							onClick={handleInputField}
 						/>
 					)}
-					<PaperAirplaneIcon className="postBtn" />
 				</div>
-				<BookmarkIcon className="postBtn" />
 			</div>
 			<p className="truncate pt-4 ">
 				{likes.length > 0 && (
