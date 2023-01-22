@@ -1,11 +1,10 @@
 import React from "react";
 import { getProviders, signIn as SignIntoProvider } from "next-auth/react";
 import Header from "../../components/Header";
-import logoText from "../../public/logoText.png";
+import logo from "../../public/googleIcon.png";
 import Image from "next/image";
 
 function signIn({ providers }) {
-	const logo = logoText;
 	return (
 		<>
 			<Header />

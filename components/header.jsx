@@ -3,22 +3,13 @@ import React from "react";
 import LogoEye from "../public/logoEye.png";
 import LogoText from "../public/logoText.png";
 
-import {
-	LogoutIcon,
-	SearchIcon,
-	PlusCircleIcon,
-	UserGroupIcon,
-	HeartIcon,
-	PaperAirplaneIcon,
-	MenuIcon,
-	HomeIcon,
-} from "@heroicons/react/outline";
+import { LogoutIcon, PlusCircleIcon, HomeIcon } from "@heroicons/react/outline";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Router from "next/router";
 import { useRecoilState } from "recoil";
 import { modalState } from "../atoms/modalAtom";
 
-function header() {
+function Header() {
 	const { data: session } = useSession();
 	const [open, setOpen] = useRecoilState(modalState);
 
@@ -40,25 +31,16 @@ function header() {
 							</div>
 							<HomeIcon onClick={() => Router.push("/")} className="navBtn " />
 
-							<div className="relative navBtn">
-								<PaperAirplaneIcon className="navBtn rotate-45" />
-								<div className="absolute -top-2 -right-2 text-xs w-5 h-5 bg-red-500 rounded-full flex items-center justify-center text-white">
-									3
-								</div>
-							</div>
 							<PlusCircleIcon
 								onClick={() => setOpen(true)}
 								className="navBtn"
 							/>
-							<UserGroupIcon className="navBtn" />
-							<HeartIcon className="navBtn" />
 						</>
 					) : (
 						<>
 							<button className="text-white" onClick={signIn}>
 								Sign In
 							</button>
-							<HomeIcon onClick={() => Router.push("/")} className="navBtn " />
 						</>
 					)}
 				</div>
@@ -70,6 +52,7 @@ function header() {
 						src={LogoText}
 						fill
 						className="object-contain"
+						alt="logo"
 					/>
 				</div>
 				<div className="relative lg:hidden flex-shrink-0  w-24 h-12 cursor-pointer">
@@ -78,6 +61,7 @@ function header() {
 						src={LogoEye}
 						fill
 						className="object-contain"
+						alt="logo"
 					/>
 				</div>
 			</div>
@@ -85,4 +69,4 @@ function header() {
 	);
 }
 
-export default header;
+export default Header;

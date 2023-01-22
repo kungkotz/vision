@@ -4,6 +4,7 @@ import { Fragment, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 import { modalState } from "../atoms/modalAtom";
 import { CameraIcon } from "@heroicons/react/outline";
+<<<<<<< HEAD
 
 export default function Example() {
 	const [open, setOpen] = useRecoilState(modalState);
@@ -12,6 +13,77 @@ export default function Example() {
 	const captionRef = useRef(null);
 	const cancelButtonRef = useRef(null);
 
+=======
+import { db, storage } from "../firebase";
+import {
+	addDoc,
+	collection,
+	doc,
+	serverTimestamp,
+	updateDoc,
+} from "@firebase/firestore";
+import { useSession } from "next-auth/react";
+import { getDownloadURL, ref, uploadString } from "firebase/storage";
+
+export default function postModal() {
+	const { data: session } = useSession();
+	const [open, setOpen] = useRecoilState(modalState);
+	const [selectedFile, setSelectedFile] = useState(null);
+	const [loading, setLoading] = useState(false);
+	const [buttonStatus, setButtonStatus] = useState(false);
+	const [isStory, setIsStory] = useState(false);
+	const captionRef = useRef(null);
+	const filePickerRef = useRef(null);
+	const cancelButtonRef = useRef(null);
+
+	const uploadPost = async () => {
+		if (loading) return;
+		setLoading(true);
+		if (!isStory) {
+			const docRef = await addDoc(collection(db, "posts"), {
+				username: session.user.username,
+				caption: captionRef.current.value,
+				userImage: session.user.image,
+				timestamp: serverTimestamp(),
+			});
+			console.log("New doc added with ID", docRef.id);
+			const imageRef = ref(storage, `posts/${docRef.id}/image`);
+
+			await uploadString(imageRef, selectedFile, "data_url").then(
+				async (snapshot) => {
+					const downloadURL = await getDownloadURL(imageRef);
+					await updateDoc(doc(db, "posts", docRef.id), {
+						image: downloadURL,
+					});
+				}
+			);
+			setOpen(false);
+			setLoading(false);
+			setSelectedFile(null);
+		} else if (isStory) {
+			const docRef = await addDoc(collection(db, "stories"), {
+				username: session.user.username,
+				userImage: session.user.image,
+				timestamp: serverTimestamp(),
+			});
+			console.log("New doc added with ID", docRef.id);
+			const imageRef = ref(storage, `stories/${docRef.id}/image`);
+
+			await uploadString(imageRef, selectedFile, "data_url").then(
+				async (snapshot) => {
+					const downloadURL = await getDownloadURL(imageRef);
+					await updateDoc(doc(db, "stories", docRef.id), {
+						image: downloadURL,
+					});
+				}
+			);
+			setOpen(false);
+			setLoading(false);
+			setSelectedFile(null);
+		}
+	};
+
+>>>>>>> feat/uploadStory
 	const cancel = () => {
 		setSelectedFile(null);
 		setOpen(false);
@@ -82,6 +154,7 @@ export default function Example() {
 										</div>
 									</div>
 								) : (
+<<<<<<< HEAD
 									<div
 										className="flex justify-center cursor-pointer"
 										onClick={() => filePickerRef.current.click()}
@@ -89,6 +162,13 @@ export default function Example() {
 										<CameraIcon
 											className="h-24 w-24 text-red-600"
 											aria-hidden="true"
+=======
+									<div className="flex justify-center cursor-pointer">
+										<CameraIcon
+											className="h-24 w-24 text-red-600 "
+											aria-hidden="true"
+											onClick={() => filePickerRef.current.click()}
+>>>>>>> feat/uploadStory
 										/>
 										<input
 											ref={filePickerRef}
@@ -99,6 +179,7 @@ export default function Example() {
 									</div>
 								)}
 
+<<<<<<< HEAD
 								<div>
 									<div className="mt-3 text-center sm:mt-5">
 										<div className="mt-2 ">
@@ -111,19 +192,52 @@ export default function Example() {
 										</div>
 									</div>
 								</div>
+=======
+								{!isStory && (
+									<div>
+										<div className="mt-3 text-center sm:mt-5">
+											<div className="mt-2 ">
+												<input
+													className=" border-none focus-ring-0 w-full text-center "
+													type="text"
+													ref={captionRef}
+													placeholder="Write a caption..."
+													accept=".png, .jpg, .jpeg"
+												/>
+											</div>
+										</div>
+									</div>
+								)}
+>>>>>>> feat/uploadStory
 							</div>
 							<div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
 								<button
 									type="button"
+<<<<<<< HEAD
+=======
+									disabled={!selectedFile}
+>>>>>>> feat/uploadStory
 									className="w-full inline-flex justify-center rounded-md
 									border border-transparent shadow-sm px-4 py-2 bg-red-600
 									text-base font-medium text-white hover:bg-red-700 
 									focus:outline-none focus:ring-2 focus:ring-offset-2
+<<<<<<< HEAD
 									focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
 									onClick={() => setOpen(false)}
 								>
 									Publish
 								</button>
+=======
+									focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm disabled:bg-gray-600"
+									onClick={uploadPost}
+									title={
+										!selectedFile ? "Please select a file to upload" : "Publish"
+									}
+								>
+									{loading ? "Publishing..." : "Publish"}
+								</button>
+
+>>>>>>> feat/uploadStory
 								<button
 									type="button"
 									className="mt-3 w-full inline-flex justify-center
@@ -133,7 +247,10 @@ export default function Example() {
 									focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0
 									sm:ml-3 sm:w-auto sm:text-sm"
 									onClick={() => setSelectedFile(null)}
+<<<<<<< HEAD
 									ref={cancelButtonRef}
+=======
+>>>>>>> feat/uploadStory
 								>
 									Reset
 								</button>
@@ -150,6 +267,26 @@ export default function Example() {
 								>
 									Cancel
 								</button>
+<<<<<<< HEAD
+=======
+								<label class="inline-flex relative items-center mr-5 cursor-pointer">
+									<input
+										type="checkbox"
+										className="sr-only peer"
+										checked={isStory}
+										readOnly
+									/>
+									<div
+										onClick={() => {
+											setIsStory(!isStory);
+										}}
+										className="w-11 h-6 bg-gray-200 rounded-full peer  peer-focus:ring-green-300  mt-5 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"
+									></div>
+									<span className="ml-2 text-sm font-medium mt-5 text-gray-900">
+										Post a Story?
+									</span>
+								</label>
+>>>>>>> feat/uploadStory
 							</div>
 						</div>
 					</Transition.Child>
